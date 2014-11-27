@@ -54,9 +54,9 @@ public class Combatant extends Group {
 				getTranslateX(), getTranslateY() + CHAR_HEIGHT));
 		if (collision instanceof Powerup) {
 			if (((Powerup) collision).getColor() == Color.RED) {
-				target.setDamage(target.getDamage() + 1);
+				target.incrementDamage(1);
 			} else if (((Powerup) collision).getColor() == Color.BLUE) {
-				setDamage(getDamage()-.5);
+				incrementDamage(-.5);
 			}
 			map.getChildren().remove(collision);
 		} else {
@@ -86,7 +86,7 @@ public class Combatant extends Group {
 				- Combatant.CHAR_WIDTH <= 30
 				&& Math.abs(getTranslateY() - target.getTranslateY())
 						- Combatant.CHAR_HEIGHT <= 75) {
-			target.setDamage(target.getDamage() + .1);
+			target.incrementDamage(.1);
 			double tVelAdjust = 100 * (target.getDamage()>0?target.getDamage():0);
 			if (getTranslateX() > target.getTranslateX()) {
 				target.setXVel(target.getXVel() - tVelAdjust);
@@ -143,6 +143,10 @@ public class Combatant extends Group {
 		return movDir;
 	}
 
+	public void incrementDamage(double i){
+		setDamage(getDamage()+i);
+	}
+	
 	public void setDamage(double d) {
 		damage = d;
 	}

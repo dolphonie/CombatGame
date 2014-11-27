@@ -23,6 +23,7 @@ public class CombatGame extends Application {
 	private static final double STARTING_Y = WINDOW_HEIGHT
 			- Combatant.CHAR_HEIGHT * 2;
 	private static final double TEXT_SIZE = 200;
+	public static final double TEXT_Y = 50;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -43,13 +44,13 @@ public class CombatGame extends Application {
 		combs[1].setTranslateX(STARTING_X[1]);
 		combs[0].setTarget(combs[1]);
 		combs[1].setTarget(combs[0]);
-		damageDisplay = new Text(WINDOW_WIDTH / 2 - TEXT_SIZE, 50, "");
+		damageDisplay = new Text(WINDOW_WIDTH / 2 - TEXT_SIZE, TEXT_Y, "");
 		damageDisplay.setFont(new Font(30));
 		updateDamageDisplay();
-		livesDisplay = new Text(WINDOW_WIDTH / 4 - TEXT_SIZE, 50, "");
+		livesDisplay = new Text(WINDOW_WIDTH / 4 - TEXT_SIZE, TEXT_Y, "");
 		livesDisplay.setFont(new Font(30));
 		updateLivesDisplay();
-		winsDisplay = new Text(WINDOW_WIDTH / 4 * 3 , 50, "");
+		winsDisplay = new Text(WINDOW_WIDTH / 4 * 3 , TEXT_Y, "");
 		winsDisplay.setFont(new Font(30));
 		updateWinsDisplay();
 		root.getChildren().addAll(combs[0], combs[1], damageDisplay,
@@ -78,7 +79,7 @@ public class CombatGame extends Application {
 				combs[0].move();
 				combs[1].move();
 				for (Combatant c : combs) {
-					if(rgen.nextInt(1000)==42){
+					if(rgen.nextInt(1000)==0){
 						Powerup p = new Powerup(rgen.nextInt(2)==1?Color.RED:Color.BLUE);
 						map.getChildren().add(p);
 					}

@@ -11,7 +11,7 @@ public class Powerup extends Rectangle{
 		super(P_WIDTH,P_HEIGHT,color);
 		rgen = new Random();
 		setX(rgen.nextInt((int)CombatGame.WINDOW_WIDTH));
-		setY(rgen.nextInt((int)CombatGame.WINDOW_HEIGHT));
+		setY(rgen.nextInt((int) ((int)CombatGame.WINDOW_HEIGHT -CombatGame.TEXT_Y*2))+CombatGame.TEXT_Y *2);
 	}
 	
 	public Color getColor(){
