@@ -35,10 +35,10 @@ public class Combatant extends Group {
 
 	public void move() {
 		if (getMoveDir() == Direction.LEFT) {
-			if (vx >= -MOVE_SPEED*2)
+			if (vx >= -MOVE_SPEED * 2)
 				adjustXVel(-MOVE_SPEED);
 		} else if (getMoveDir() == Direction.RIGHT) {
-			if (vx <= MOVE_SPEED*2)
+			if (vx <= MOVE_SPEED * 2)
 				adjustXVel(MOVE_SPEED);
 		}
 		if (vx < 0) {
@@ -52,44 +52,53 @@ public class Combatant extends Group {
 		setTranslateY(getTranslateY() - getYVel());
 		Rectangle collision = (Rectangle) map.hitsMap(new Point2D(
 				getTranslateX(), getTranslateY() + CHAR_HEIGHT));
-		if (getTranslateY() <= CombatGame.WINDOW_HEIGHT - CHAR_HEIGHT
-				&& collision == null) {
-			adjustYVel(-1);
+		if (collision instanceof Powerup) {
+			if (((Powerup) collision).getColor() == Color.RED) {
+				target.setDamage(target.getDamage() + 1);
+			} else if (((Powerup) collision).getColor() == Color.BLUE) {
+				setDamage(getDamage()-.5);
+			}
+			map.getChildren().remove(collision);
 		} else {
-			if (collision == null) {
-				jumps = 0;
-				setTranslateY(CombatGame.WINDOW_HEIGHT - CHAR_HEIGHT);
-				setYVel(0);
+			if (getTranslateY() <= CombatGame.WINDOW_HEIGHT - CHAR_HEIGHT
+					&& collision == null) {
+				adjustYVel(-1);
 			} else {
-				if (vy < 0) {
+				if (collision == null) {
 					jumps = 0;
+					setTranslateY(CombatGame.WINDOW_HEIGHT - CHAR_HEIGHT);
 					setYVel(0);
-					setTranslateY(collision.getY() - CHAR_HEIGHT);
-				}
+				} else {
+					if (vy < 0) {
+						jumps = 0;
+						setYVel(0);
+						setTranslateY(collision.getY() - CHAR_HEIGHT);
+					}
 
+				}
 			}
 		}
 
 	}
 
-	public void attack(Combatant defender) {
-		if (Math.abs(getTranslateX() - defender.getTranslateX())
+	public void attack() {
+		if (Math.abs(getTranslateX() - target.getTranslateX())
 				- Combatant.CHAR_WIDTH <= 30
-				&& Math.abs(getTranslateY() - defender.getTranslateY())
+				&& Math.abs(getTranslateY() - target.getTranslateY())
 						- Combatant.CHAR_HEIGHT <= 75) {
-			defender.setDamage(defender.getDamage() + .1);
-			if (getTranslateX() > defender.getTranslateX()) {
-				defender.setXVel(defender.getXVel() - 100
-						* defender.getDamage());
+			target.setDamage(target.getDamage() + .1);
+			double tVelAdjust = 100 * (target.getDamage()>0?target.getDamage():0);
+			if (getTranslateX() > target.getTranslateX()) {
+				target.setXVel(target.getXVel() - tVelAdjust);
 			} else
-				defender.setXVel(defender.getXVel() + 100
-						* defender.getDamage());
+				target.setXVel(target.getXVel() + tVelAdjust);
 		}
 	}
 
-	public int getWins(){
+	public int getWins() {
 		return wins;
 	}
+
 	public void incrementWins() {
 		wins++;
 	}
@@ -114,7 +123,6 @@ public class Combatant extends Group {
 		vx += increment;
 	}
 
-	//
 	public void adjustYVel(double increment) {
 		setYVel(getYVel() + increment);
 	}
@@ -151,6 +159,15 @@ public class Combatant extends Group {
 		return jumps;
 	}
 
+	public void setTarget(Combatant t) {
+		target = t;
+	}
+
+	public Combatant getTarget() {
+		return target;
+	}
+
+	Combatant target;
 	private int jumps;
 	private Map map;
 	private double damage = .1;

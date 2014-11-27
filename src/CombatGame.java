@@ -41,6 +41,8 @@ public class CombatGame extends Application {
 		combs[1] = new Combatant(Color.RED, map);
 		combs[1].setTranslateY(STARTING_Y);
 		combs[1].setTranslateX(STARTING_X[1]);
+		combs[0].setTarget(combs[1]);
+		combs[1].setTarget(combs[0]);
 		damageDisplay = new Text(WINDOW_WIDTH / 2 - TEXT_SIZE, 50, "");
 		damageDisplay.setFont(new Font(30));
 		updateDamageDisplay();
@@ -76,9 +78,9 @@ public class CombatGame extends Application {
 				combs[0].move();
 				combs[1].move();
 				for (Combatant c : combs) {
-					if(rgen.nextInt(100)==42){
-						//Powerup p = new Powerup(Color.BLUE);
-						//map.getChildren().add(p);
+					if(rgen.nextInt(1000)==42){
+						Powerup p = new Powerup(rgen.nextInt(2)==1?Color.RED:Color.BLUE);
+						map.getChildren().add(p);
 					}
 					
 					boolean isDead = false;
@@ -108,6 +110,7 @@ public class CombatGame extends Application {
 			c.setTranslateX(STARTING_X[i]);
 			c.setLives(3);
 		}
+		map.clear();		
 	}
 
 	private void handleKeyPressEvent(KeyEvent ke) {
@@ -124,10 +127,10 @@ public class CombatGame extends Application {
 			combs[0].setMovDir(Combatant.Direction.RIGHT);
 			break;
 		case G:
-			combs[0].attack(combs[1]);
+			combs[0].attack();
 			break;
 		case NUMPAD1:
-			combs[1].attack(combs[0]);
+			combs[1].attack();
 			break;
 		case LEFT:
 			combs[1].setMovDir(Combatant.Direction.LEFT);
@@ -197,7 +200,7 @@ public class CombatGame extends Application {
 			break;
 		}
 	}
-
+	
 	private Random rgen;
 	private Map map;
 	private Text damageDisplay, livesDisplay, winsDisplay;

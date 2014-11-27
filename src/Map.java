@@ -24,4 +24,12 @@ public class Map extends Group{
 		return null;
 	}
 	
+	public void clear(){
+		for(Object value: getChildren().toArray()){
+			if (value instanceof Powerup){
+				getChildren().remove(value);
+			}
+		}
+	}
+	
 }
