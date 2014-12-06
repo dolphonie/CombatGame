@@ -54,7 +54,7 @@ public class Combatant extends Group {
 				getTranslateX(), getTranslateY() + CHAR_HEIGHT));
 		if (collision instanceof Powerup) {
 			if (((Powerup) collision).getColor() == Color.RED) {
-				target.incrementDamage(1);
+				target.incrementDamage(.5);
 			} else if (((Powerup) collision).getColor() == Color.BLUE) {
 				incrementDamage(-.5);
 			}
