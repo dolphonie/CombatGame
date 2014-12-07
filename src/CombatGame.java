@@ -78,11 +78,25 @@ public class CombatGame extends Application {
 			public void handle(long now) {
 				combs[0].move();
 				combs[1].move();
-				for (Combatant c : combs) {
-					if(rgen.nextInt(1000)==0){
-						Powerup p = new Powerup(rgen.nextInt(2)==1?Color.RED:Color.BLUE);
-						map.getChildren().add(p);
+				if(rgen.nextInt(500)==0){
+					int key = rgen.nextInt(3);
+					Color color = Color.PINK;
+					switch(key){
+					case 0:
+						color = Color.BLUE;
+						break;
+					case 1:
+						color = Color.RED;
+						break;
+					case 2:
+						color = Color.GREEN;
+						break;
 					}
+					Powerup p = new Powerup(color);
+					map.getChildren().add(p);
+				}
+				for (Combatant c : combs) {
+					
 					
 					boolean isDead = false;
 					if (c.getTranslateX() <= -KILL_REGION
@@ -140,16 +154,10 @@ public class CombatGame extends Application {
 			combs[1].setMovDir(Combatant.Direction.RIGHT);
 			break;
 		case W:
-			if (combs[0].getJumps() < 2) {
-				combs[0].setJumps((int) (combs[0].getJumps() + 1));
-				combs[0].setYVel(20);
-			}
+			combs[0].jump();
 			break;
 		case UP:
-			if (combs[1].getJumps() < 2) {
-				combs[1].setJumps((int) (combs[1].getJumps() + 1));
-				combs[1].setYVel(20);
-			}
+			combs[1].jump();
 			break;
 		default:
 			break;

@@ -23,6 +23,7 @@ public class Combatant extends Group {
 		vx = 0;
 		vy = 0;
 		damage = .1;
+		maxJumps = 2;
 		movDir = Direction.NONE;
 		setTranslateY(CombatGame.WINDOW_HEIGHT - CHAR_HEIGHT * 2);
 		setTranslateX(CombatGame.WINDOW_WIDTH / 2);
@@ -57,6 +58,8 @@ public class Combatant extends Group {
 				target.incrementDamage(.5);
 			} else if (((Powerup) collision).getColor() == Color.BLUE) {
 				incrementDamage(-.5);
+			} else if (((Powerup) collision).getColor() == Color.GREEN) {
+				maxJumps+=2;
 			}
 			map.getChildren().remove(collision);
 		} else {
@@ -81,6 +84,13 @@ public class Combatant extends Group {
 
 	}
 
+	public void jump(){
+		if (getJumps() < maxJumps) {
+			setJumps((int) (getJumps() + 1));
+			setYVel(20);
+		}
+	}
+	
 	public void attack() {
 		if (Math.abs(getTranslateX() - target.getTranslateX())
 				- Combatant.CHAR_WIDTH <= 30
@@ -173,6 +183,7 @@ public class Combatant extends Group {
 
 	Combatant target;
 	private int jumps;
+	private int maxJumps = 2;
 	private Map map;
 	private double damage = .1;
 	private int lives = 3;
